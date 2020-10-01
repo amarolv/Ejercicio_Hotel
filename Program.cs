@@ -27,14 +27,14 @@ namespace Ejercicio_Hotel
                
             }*/
             //RegistroCliente();
-            int rows = 0;
+            /*int rows = 0;
             do
             {
                 Console.WriteLine("Introduzca el DNI");
                 rows = EditarCliente(Console.ReadLine());
 
-            } while (rows == 0);
-
+            } while (rows == 0); */
+            CheckIn();
         }
         static void Menu()
         {
@@ -88,30 +88,52 @@ namespace Ejercicio_Hotel
         {
             /*Check-in: Aquí pediremos el DNI del cliente que quiere hacer la reserva. Si el cliente no 
             existe en la tabla clientes aparecerá un mensaje que nos indique que el cliente no está 
-            registrado y por lo tanto no puede hacer una reserva.*/
-            //1.- Pedir DNI con console.readline()
-            //2.- Revisar en BBDD si existe mediante consulta/select
-            //3.- Si existe, asignar a tabla RESERVAS (CodReserva, DNICliente, CodHabitacion, FechaCheckIn, FechaCheckOut)
+            registrado y por lo tanto no puede hacer una reserva.
+            Si el cliente está registrado, le aparecerá un listado con las habitaciones ​disponibles 
+            del hotel para que seleccione la que quiera reservar. Una vez validado que el número 
+            de la habitación que ha introducido es correcto, tendremos que hacer un update a la 
+            tabla de HABITACIONES para poner la habitación como ocupada. 
+            */
 
             string dni;
             Console.WriteLine("Ingresa tu DNI:");
             dni = Console.ReadLine();
 
             conexion.Open();
-            string query = "Select DNI from Clientes";
+            string query = "select * from Clientes where DNI = '" + dni + "'";
+            string query2 = "select CodHabitacion from Habitaciones where Estado = 0";
             SqlCommand comando = new SqlCommand(query, conexion);
             SqlDataReader registros = comando.ExecuteReader();
-            while (registros.Read())
+            if (registros.Read())
+            {
+                Console.WriteLine("Bienvenida(o)" + " " + registros["Nombre"] + " " + registros["Apellido"]);
+                conexion.Close();
+                conexion.Open();
+                comando = new SqlCommand(query2, conexion);
+                registros = comando.ExecuteReader();
+                if (registros.Read())
+                {
+                    Console.WriteLine("Elige una habitación");
+                    do
+                    {
+                    Console.WriteLine(registros["CodHabitacion"].ToString());
+                    } while (registros.Read());
+                }
+                else
+                {
+                    Console.WriteLine("pos te j0des jeje");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No estás registrado");
+            }
 
                 conexion.Close();
         }
         static void CheckOut(string DNI)
         {
             
-        }
-        static void VerHabit()
-        {
-
         }
     }
 }
