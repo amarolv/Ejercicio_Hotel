@@ -37,7 +37,6 @@ namespace Ejercicio_Hotel
 
            // CheckOut(Console.ReadLine());
 
-            } while (rows == 0); */
             CheckIn();
         }
         static void Menu()
@@ -112,6 +111,28 @@ namespace Ejercicio_Hotel
             {
                 Console.WriteLine("Bienvenida(o)" + " " + registros["Nombre"] + " " + registros["Apellido"]);
                 conexion.Close();
+
+                conexion.Open();
+                comando = new SqlCommand(query2, conexion);
+                registros = comando.ExecuteReader();
+                if (registros.Read())
+                {
+                    Console.WriteLine("Elige una habitación");
+                    do
+                    {
+                        Console.WriteLine(registros["CodHabitacion"].ToString());
+                    } while (registros.Read());
+                }
+                else
+                {
+                    Console.WriteLine("pos te j0des jeje");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No estás registrado");
+            }
+            conexion.Close();
         }
         static void CheckOut(string DNI)
         {
@@ -145,32 +166,9 @@ namespace Ejercicio_Hotel
                 conexion.Close();
                 Console.WriteLine($"No hay reservas pendientes de cerrar para el cliente con dni {DNI}");
             }
-                conexion.Open();
-                comando = new SqlCommand(query2, conexion);
-                registros = comando.ExecuteReader();
-                if (registros.Read())
-                {
-                    Console.WriteLine("Elige una habitación");
-                    do
-                    {
-                    Console.WriteLine(registros["CodHabitacion"].ToString());
-                    } while (registros.Read());
-                }
-                else
-                {
-                    Console.WriteLine("pos te j0des jeje");
-                }
-            }
-            else
-            {
-                Console.WriteLine("No estás registrado");
-            }
 
-                conexion.Close();
+          
         }
-        static void CheckOut(string DNI)
-        {
-            
-        }
+       
     }
 }
