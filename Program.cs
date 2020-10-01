@@ -12,7 +12,7 @@ namespace Ejercicio_Hotel
         static string connectionStringAlex = ConfigurationManager.ConnectionStrings["DDBB_HOTEL_Alejandro"].ConnectionString;
         //static SqlConnection conexion = new SqlConnection(connectionStringAmaro);
         static SqlConnection conexion = new SqlConnection(connectionStringAlex);
-     
+
 
         static void Main(string[] args)
         {
@@ -26,13 +26,19 @@ namespace Ejercicio_Hotel
             {
                
             }*/
-            Menu();
+            //RegistroCliente();
+            int rows = 0;
+            do
+            {
+                Console.WriteLine("Introduzca el DNI");
+                rows = EditarCliente(Console.ReadLine());
 
+            } while (rows == 0);
 
         }
         static void Menu()
         {
-            
+
         }
         static void RegistroCliente()
         {
@@ -52,9 +58,31 @@ namespace Ejercicio_Hotel
             comando.ExecuteNonQuery();
             conexion.Close();
         }
-        static void EditarCliente(string DNI)
+        static int EditarCliente(string DNI)
         {
-            
+            conexion.Open();
+            string querySelect = $"SELECT nombre, apellido from clientes where dni = '{DNI}'";
+            SqlCommand comando = new SqlCommand(querySelect, conexion);
+            SqlDataReader reader = comando.ExecuteReader();
+
+            if (reader.Read())
+            {
+                Console.WriteLine("El nombre es {0} y el apellido es {1}",reader[0].ToString(),reader[1].ToString());
+                conexion.Close();
+                conexion.Open();
+                Console.WriteLine("Introduzca el nombre correcto");
+                string nombre = Console.ReadLine(); ;
+                Console.WriteLine("Introduzca el apellido correcto");
+                string apellido = Console.ReadLine();
+                string queryUpdate = $"Update Clientes set nombre = '{nombre}' , apellido = '{apellido}' where dni = '{DNI}' ";
+                comando = new SqlCommand(queryUpdate, conexion);
+                int rows = comando.ExecuteNonQuery();
+                conexion.Close();
+                return rows;
+            }
+            conexion.Close();
+            return 0;
+
         }
         static void CheckIn()
         {
