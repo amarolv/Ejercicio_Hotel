@@ -25,7 +25,7 @@ namespace Ejercicio_Hotel
             comando.ExecuteNonQuery();
             {
                
-            }*/
+            }
             //RegistroCliente();
             int rows = 0;
             do
@@ -33,7 +33,9 @@ namespace Ejercicio_Hotel
                 Console.WriteLine("Introduzca el DNI");
                 rows = EditarCliente(Console.ReadLine());
 
-            } while (rows == 0);
+            } while (rows == 0);*/
+
+           // CheckOut(Console.ReadLine());
 
         }
         static void Menu()
@@ -67,7 +69,7 @@ namespace Ejercicio_Hotel
 
             if (reader.Read())
             {
-                Console.WriteLine("El nombre es {0} y el apellido es {1}",reader[0].ToString(),reader[1].ToString());
+                Console.WriteLine("El nombre es {0} y el apellido es {1}", reader[0].ToString(), reader[1].ToString());
                 conexion.Close();
                 conexion.Open();
                 Console.WriteLine("Introduzca el nombre correcto");
@@ -90,7 +92,36 @@ namespace Ejercicio_Hotel
         }
         static void CheckOut(string DNI)
         {
+            conexion.Open();
+            string querySelect = $"SELECT * from reservas where dniCliente = '{DNI}' and fechacheckout is null";
+            SqlCommand comando = new SqlCommand(querySelect, conexion);
+            SqlDataReader reader = comando.ExecuteReader();
+            if (reader.Read())
+            {
+                do
+                {
+                    Console.WriteLine(reader[2].ToString(), reader[3].ToString());
 
+                } while (reader.Read());
+                Console.WriteLine("Introduzca el numero de habitacion");
+                int hab = Convert.ToInt32(Console.ReadLine().ToString());
+                conexion.Close();
+                conexion.Open();
+                string queryUpdateReserva = $"UPDATE Reservas set fechacheckout ='{DateTime.Now}' where dniCliente = '{DNI}' and " +
+                    $"codhabitacion = '{hab}'";//cierra la reserva
+                comando = new SqlCommand(queryUpdateReserva, conexion);
+                comando.ExecuteNonQuery();
+                conexion.Close();
+                conexion.Open();
+                string queryUpdateHabitacion = $"UPDATE Habitaciones set estado = '0' where codhabitacion = {hab}";//libera habitacion
+                comando = new SqlCommand(queryUpdateHabitacion, conexion);
+                comando.ExecuteNonQuery();
+                conexion.Close();
+            }
+            else {
+                conexion.Close();
+                Console.WriteLine($"No hay reservas pendientes de cerrar para el cliente con dni {DNI}");
+            }
         }
         static void VerHabit()
         {
