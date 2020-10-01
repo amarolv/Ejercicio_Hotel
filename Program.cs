@@ -6,8 +6,10 @@ namespace Ejercicio_Hotel
 {
     class Program
     {
-        static string connectionString = ConfigurationManager.ConnectionStrings["DDBB_HOTEL"].ConnectionString;
-        static SqlConnection conexion = new SqlConnection(connectionString);
+        //static string connectionStringAmaro = ConfigurationManager.ConnectionStrings["DDBB_HOTELAmaro"].ConnectionString;
+        static string connectionStringAlex = ConfigurationManager.ConnectionStrings["DDBB_HOTELAlex"].ConnectionString;
+        //static SqlConnection conexion = new SqlConnection(connectionStringAmaro);
+        static SqlConnection conexion = new SqlConnection(connectionStringAlex);
         //static string cadena;
         //static SqlCommand comando;
         //static SqlDataReader registros;
