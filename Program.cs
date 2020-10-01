@@ -16,7 +16,7 @@ namespace Ejercicio_Hotel
 
         static void Main(string[] args)
         {
-            
+
             /*
             conexion.Open();
             string query = "SELECT asd FROM qwer";
@@ -26,17 +26,31 @@ namespace Ejercicio_Hotel
             {
                
             }*/
-            
+            Menu();
 
 
         }
         static void Menu()
         {
-
+            
         }
         static void RegistroCliente()
         {
+            string name;
+            string lastName;
+            string dni;
+            Console.WriteLine("Ingresa tu nombre:");
+            name = Console.ReadLine();
+            Console.WriteLine("Ingresa tu apellido:");
+            lastName = Console.ReadLine();
+            Console.WriteLine("Ingresa tu DNI:");
+            dni = Console.ReadLine();
 
+            conexion.Open();
+            string query1 = "insert into Clientes (Nombre,Apellido,DNI) values ('" + name + "','" + lastName + "','" + dni + "')";
+            SqlCommand comando = new SqlCommand(query1, conexion);
+            comando.ExecuteNonQuery();
+            conexion.Close();
         }
         static void EditarCliente(string DNI)
         {
@@ -44,7 +58,7 @@ namespace Ejercicio_Hotel
         }
         static void CheckIn()
         {
-
+           
         }
         static void CheckOut(string DNI)
         {
