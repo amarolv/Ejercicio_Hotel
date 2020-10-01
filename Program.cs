@@ -12,7 +12,7 @@ namespace Ejercicio_Hotel
         static string connectionStringAlex = ConfigurationManager.ConnectionStrings["DDBB_HOTEL_Alejandro"].ConnectionString;
         //static SqlConnection conexion = new SqlConnection(connectionStringAmaro);
         static SqlConnection conexion = new SqlConnection(connectionStringAlex);
-     
+
 
         static void Main(string[] args)
         {
@@ -26,8 +26,7 @@ namespace Ejercicio_Hotel
             {
                
             }*/
-            Menu();
-
+           
 
         }
         static void Menu()
@@ -52,9 +51,28 @@ namespace Ejercicio_Hotel
             comando.ExecuteNonQuery();
             conexion.Close();
         }
-        static void EditarCliente(string DNI)
+        static int EditarCliente(string DNI)
         {
-            
+            conexion.Open();
+            string querySelect = $"SELECT nombre, apellido from clientes where dni = '{DNI}'";
+            SqlCommand comando = new SqlCommand(querySelect, conexion);
+            SqlDataReader reader = comando.ExecuteReader();
+
+            if (reader.Read())
+            {
+                conexion.Close();
+                conexion.Open();
+                string nombre = Console.ReadLine(); ;
+                string apellido = Console.ReadLine();
+                string queryUpdate = $"Update Clientes set nombre = '{nombre}' , apellido = '{apellido}' where dni = '{DNI}' ";
+                comando = new SqlCommand(queryUpdate, conexion);
+                int rows = comando.ExecuteNonQuery();
+                conexion.Close();
+                return rows;
+            }
+            conexion.Close();
+            return 0;
+
         }
         static void CheckIn()
         {
