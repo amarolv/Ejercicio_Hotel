@@ -6,6 +6,10 @@ namespace Ejercicio_Hotel
 {
     class Program
     {
+        static string connectionString = ConfigurationManager.ConnectionStrings["DDBB_HOTEL"].ConnectionString;
+        static SqlConnection conexion = new SqlConnection(connectionString);
+        string Disponible = "Disponible";
+        string Ocupado = "Ocupada";
         //static string connectionStringAmaro = ConfigurationManager.ConnectionStrings["DDBB_HOTELAmaro"].ConnectionString;
         static string connectionStringAlex = ConfigurationManager.ConnectionStrings["DDBB_HOTELAlex"].ConnectionString;
         //static SqlConnection conexion = new SqlConnection(connectionStringAmaro);
@@ -16,6 +20,7 @@ namespace Ejercicio_Hotel
 
         static void Main(string[] args)
         {
+            /*
             conexion.Open();
             string query = "SELECT * FROM Habitaciones";
             SqlCommand comando = new SqlCommand(query, conexion);
@@ -25,6 +30,9 @@ namespace Ejercicio_Hotel
                 Console.WriteLine(registros["CodHabitacion"].ToString() + "\n" +
                     "\t" + registros["Estado"]);
             }
+            */
+
+
         }
     }
 }
