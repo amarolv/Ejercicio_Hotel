@@ -8,12 +8,11 @@ namespace Ejercicio_Hotel
     {
         static string connectionString = ConfigurationManager.ConnectionStrings["DDBB_HOTEL"].ConnectionString;
         static SqlConnection conexion = new SqlConnection(connectionString);
-        //static string cadena;
-        //static SqlCommand comando;
-        //static SqlDataReader registros;
-
+        string Disponible = "Disponible";
+        string Ocupado = "Ocupada";
         static void Main(string[] args)
         {
+            /*
             conexion.Open();
             string query = "SELECT * FROM Habitaciones";
             SqlCommand comando = new SqlCommand(query, conexion);
@@ -23,6 +22,9 @@ namespace Ejercicio_Hotel
                 Console.WriteLine(registros["CodHabitacion"].ToString() + "\n" +
                     "\t" + registros["Estado"]);
             }
+            */
+
+
         }
     }
 }
