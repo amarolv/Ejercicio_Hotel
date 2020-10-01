@@ -88,7 +88,24 @@ namespace Ejercicio_Hotel
         }
         static void CheckIn()
         {
+            /*Check-in: Aquí pediremos el DNI del cliente que quiere hacer la reserva. Si el cliente no 
+            existe en la tabla clientes aparecerá un mensaje que nos indique que el cliente no está 
+            registrado y por lo tanto no puede hacer una reserva.*/
+            //1.- Pedir DNI con console.readline()
+            //2.- Revisar en BBDD si existe mediante consulta/select
+            //3.- Si existe, asignar a tabla RESERVAS (CodReserva, DNICliente, CodHabitacion, FechaCheckIn, FechaCheckOut)
 
+            string dni;
+            Console.WriteLine("Ingresa tu DNI:");
+            dni = Console.ReadLine();
+
+            conexion.Open();
+            string query = "Select DNI from Clientes";
+            SqlCommand comando = new SqlCommand(query, conexion);
+            SqlDataReader registros = comando.ExecuteReader();
+            while (registros.Read())
+
+                conexion.Close();
         }
         static void CheckOut(string DNI)
         {
