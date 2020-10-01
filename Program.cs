@@ -8,8 +8,8 @@ namespace Ejercicio_Hotel
     {
         string Disponible = "Disponible";
         string Ocupado = "Ocupada";
-        //static string connectionStringAmaro = ConfigurationManager.ConnectionStrings["DDBB_HOTELAmaro"].ConnectionString;
-        static string connectionStringAlex = ConfigurationManager.ConnectionStrings["DDBB_HOTELAlex"].ConnectionString;
+        //static string connectionStringAmaro = ConfigurationManager.ConnectionStrings["DDBB_HOTEL_Amaro"].ConnectionString;
+        static string connectionStringAlex = ConfigurationManager.ConnectionStrings["DDBB_HOTEL_Alejandro"].ConnectionString;
         //static SqlConnection conexion = new SqlConnection(connectionStringAmaro);
         static SqlConnection conexion = new SqlConnection(connectionStringAlex);
      
