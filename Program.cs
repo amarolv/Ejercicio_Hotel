@@ -16,18 +16,42 @@ namespace Ejercicio_Hotel
 
         static void Main(string[] args)
         {
+            
             /*
             conexion.Open();
-            string query = "SELECT * FROM Habitaciones";
-            SqlCommand comando = new SqlCommand(query, conexion);
-            SqlDataReader registros = comando.ExecuteReader();
-            while (registros.Read())
+            string query = "SELECT asd FROM qwer";
+            string query2 = "SELECT qwer FROM asd";
+            SqlCommand comando = new SqlCommand(query2, conexion);
+            comando.ExecuteNonQuery();
             {
-                Console.WriteLine(registros["CodHabitacion"].ToString() + "\n" +
-                    "\t" + registros["Estado"]);
-            }
-            */
+               
+            }*/
+            
 
+
+        }
+        static void Menu()
+        {
+
+        }
+        static void RegistroCliente()
+        {
+
+        }
+        static void EditarCliente(string DNI)
+        {
+            
+        }
+        static void CheckIn()
+        {
+
+        }
+        static void CheckOut(string DNI)
+        {
+
+        }
+        static void VerHabit()
+        {
 
         }
     }
