@@ -17,65 +17,58 @@ namespace Ejercicio_Hotel
         static void Main(string[] args)
         {
             Menu();
-            /*
-            RegistroCliente();
-            int rows = 0;
-            do
-            {
-                Console.WriteLine("Introduzca el DNI");
-                rows = EditarCliente(Console.ReadLine());
-
-            } while (rows == 0);
-
-            CheckOut(Console.ReadLine());
-
-            CheckIn();
-            */
         }
         static void Menu()
         {
             int answer;
             string[] mainMenu = { "1. Registrar Cliente", "2. Editar Cliente", "3. Check-in", "4. Check-out", "5. Ver habitaciones", "6. salir" };
-            Console.WriteLine("Elige una opción:");
-            Console.WriteLine(mainMenu[0] + "\n" +
-                mainMenu[1] + "\n" +
-                mainMenu[2] + "\n" +
-                mainMenu[3] + "\n" +
-                mainMenu[4] + "\n" +
-                mainMenu[5]);
-            answer = Convert.ToInt32(Console.ReadLine());
-
-            switch (answer)
+            do
             {
-                case 1:
-                    Console.WriteLine("Has elegido registrar un cliente.");
-                    RegistroCliente();
-                    break;
-                case 2:
-                    string dni;
-                    Console.WriteLine("Has elegido editar un cliente. \n " +
-                        "Ingresa DNI de cliente.");
-                    dni = Console.ReadLine();
-                    EditarCliente(dni);
-                    break;
-                case 3:
-                    Console.WriteLine("Has elegido hacer un check in.");
-                    CheckIn();
-                    break;
-                case 4:
-                    Console.WriteLine("Has elegido hacer un check out. \n " +
-                        "Ingresa DNI de cliente.");
-                    dni = Console.ReadLine();
-                    CheckOut(dni);
-                    break;
-                case 5:
-                    Console.WriteLine("Has elegido ver habitaciones.");
-                    VerHab();
-                    break;
-                default:
-                    Console.WriteLine("Hasta luego MariCarmen.");
-                    break;
-            }
+                Console.WriteLine("Elige una opción:");
+                Console.WriteLine(mainMenu[0] + "\n" +
+                    mainMenu[1] + "\n" +
+                    mainMenu[2] + "\n" +
+                    mainMenu[3] + "\n" +
+                    mainMenu[4] + "\n" +
+                    mainMenu[5]);
+                answer = Convert.ToInt32(Console.ReadLine());
+                Console.Clear();
+                switch (answer)
+                {
+                    case 1:
+                        Console.WriteLine("Has elegido registrar un cliente.");
+                        RegistroCliente();
+                        break;
+                    case 2:
+                        string dni;
+                        Console.WriteLine("Has elegido editar un cliente. \n " +
+                            "Ingresa DNI de cliente.");
+                        dni = Console.ReadLine();
+                        EditarCliente(dni);
+                        break;
+                    case 3:
+                        Console.WriteLine("Has elegido hacer un check in.");
+                        CheckIn();
+                        break;
+                    case 4:
+                        Console.WriteLine("Has elegido hacer un check out. \n " +
+                            "Ingresa DNI de cliente.");
+                        dni = Console.ReadLine();
+                        CheckOut(dni);
+                        break;
+                    case 5:
+                        Console.WriteLine("Has elegido ver habitaciones.");
+                        VerHab();
+                        break;
+                    case 6:
+                        Console.WriteLine("Hasta luego MariCarmen.");
+                        break;
+                    default:
+                        Console.WriteLine("Opción no válida.");
+                        break;
+                } 
+            } while (answer != 6);
+
             static void RegistroCliente()
             {
                 string name;
