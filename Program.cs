@@ -35,13 +35,14 @@ namespace Ejercicio_Hotel
         static void Menu()
         {
             int answer;
-            string[] mainMenu = { "1. Registrar Cliente", "2. Editar Cliente", "3. Check-in", "4. Check-out", "5. Salir" };
+            string[] mainMenu = { "1. Registrar Cliente", "2. Editar Cliente", "3. Check-in", "4. Check-out", "5. Ver habitaciones", "6. salir" };
             Console.WriteLine("Elige una opción:");
             Console.WriteLine(mainMenu[0] + "\n" +
                 mainMenu[1] + "\n" +
                 mainMenu[2] + "\n" +
                 mainMenu[3] + "\n" +
-                mainMenu[4] + "\n");
+                mainMenu[4] + "\n" +
+                mainMenu[5]);
             answer = Convert.ToInt32(Console.ReadLine());
 
             switch (answer)
@@ -66,6 +67,10 @@ namespace Ejercicio_Hotel
                         "Ingresa DNI de cliente.");
                     dni = Console.ReadLine();
                     CheckOut(dni);
+                    break;
+                case 5:
+                    Console.WriteLine("Has elegido ver habitaciones.");
+                    VerHab();
                     break;
                 default:
                     Console.WriteLine("Hasta luego MariCarmen.");
