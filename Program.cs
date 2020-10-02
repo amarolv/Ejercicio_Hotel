@@ -197,51 +197,53 @@ namespace Ejercicio_Hotel
                     Console.WriteLine($"No hay reservas pendientes de cerrar para el cliente con dni {DNI}");
                 }
 
-          
-        }
 
-        static void VerHab() {
+            }
 
-            string queryHabVacias = "SELECT * from Habitaciones where estado = 0";
-            string queryHabCliente = "SELECT Clientes.Nombre,Clientes.Apellido,[Habitaciones].CodHabitacion " +
-                "FROM[DDBB_HOTEL].[dbo].[Reservas], Habitaciones, Clientes " +
-                "where Reservas.CodHabitacion = Habitaciones.CodHabitacion " +
-                "and FechaCheckOut is null " +
-                "and Clientes.DNI = DNICliente " +
-                "and Habitaciones.Estado = 1";
-            string queryAll = "SELECT * FROM Habitaciones h FULL OUTER JOIN Reservas r ON r.CodHabitacion=h.CodHabitacion and r.FechaCheckOut is null " +
-                "FULL OUTER JOIN Clientes ON Clientes.DNI=r.DNICliente " +
-                "where r.FechaCheckOut is null";
-            conexion.Open();
-            SqlCommand comando = new SqlCommand(queryAll, conexion);
-            SqlDataReader reader = comando.ExecuteReader();
-            while (reader.Read())
+            static void VerHab()
             {
-                Console.WriteLine("{0}\t{1}\t{2}\t{3}",reader[0].ToString()!=""?reader[0].ToString():"----", reader[1].ToString()!=""?reader[1].ToString():"----",
-                    reader[2].ToString(), reader[3].ToString());
-            }
-            conexion.Close();
-            Console.WriteLine("\n\n********************************************************************\n");
 
-            conexion.Open();
-            comando = new SqlCommand(queryHabCliente, conexion);
-            reader = comando.ExecuteReader();
-            while (reader.Read())
-            {
-                Console.WriteLine("{0}\t{1}\t{2}", reader[0].ToString() != "" ? reader[0].ToString() : "----", reader[1].ToString() != "" ? reader[1].ToString() : "----",
-                    reader[2].ToString());
+                string queryHabVacias = "SELECT * from Habitaciones where estado = 0";
+                string queryHabCliente = "SELECT Clientes.Nombre,Clientes.Apellido,[Habitaciones].CodHabitacion " +
+                    "FROM[DDBB_HOTEL].[dbo].[Reservas], Habitaciones, Clientes " +
+                    "where Reservas.CodHabitacion = Habitaciones.CodHabitacion " +
+                    "and FechaCheckOut is null " +
+                    "and Clientes.DNI = DNICliente " +
+                    "and Habitaciones.Estado = 1";
+                string queryAll = "SELECT * FROM Habitaciones h FULL OUTER JOIN Reservas r ON r.CodHabitacion=h.CodHabitacion and r.FechaCheckOut is null " +
+                    "FULL OUTER JOIN Clientes ON Clientes.DNI=r.DNICliente " +
+                    "where r.FechaCheckOut is null";
+                conexion.Open();
+                SqlCommand comando = new SqlCommand(queryAll, conexion);
+                SqlDataReader reader = comando.ExecuteReader();
+                while (reader.Read())
+                {
+                    Console.WriteLine("{0}\t{1}\t{2}\t{3}", reader[0].ToString() != "" ? reader[0].ToString() : "----", reader[1].ToString() != "" ? reader[1].ToString() : "----",
+                        reader[2].ToString(), reader[3].ToString());
+                }
+                conexion.Close();
+                Console.WriteLine("\n\n********************************************************************\n");
+
+                conexion.Open();
+                comando = new SqlCommand(queryHabCliente, conexion);
+                reader = comando.ExecuteReader();
+                while (reader.Read())
+                {
+                    Console.WriteLine("{0}\t{1}\t{2}", reader[0].ToString() != "" ? reader[0].ToString() : "----", reader[1].ToString() != "" ? reader[1].ToString() : "----",
+                        reader[2].ToString());
+                }
+                conexion.Close();
+
+                Console.WriteLine("\n\n********************************************************************\n");
+                conexion.Open();
+                comando = new SqlCommand(queryHabVacias, conexion);
+                reader = comando.ExecuteReader();
+                while (reader.Read())
+                {
+                    Console.WriteLine("{0}\t{1}", reader[0].ToString(), reader[1].ToString());
+                }
+                conexion.Close();
             }
-            conexion.Close();
-           
-            Console.WriteLine("\n\n********************************************************************\n");
-            conexion.Open();
-            comando = new SqlCommand(queryHabVacias, conexion);
-            reader = comando.ExecuteReader();
-            while (reader.Read())
-            {
-                Console.WriteLine("{0}\t{1}", reader[0].ToString() , reader[1].ToString() );
-            }
-            conexion.Close();
         }
     }
 }
