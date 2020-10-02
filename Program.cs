@@ -21,7 +21,7 @@ namespace Ejercicio_Hotel
         static void Menu()
         {
             int answer;
-            string[] mainMenu = { "1. Registrar Cliente", "2. Editar Cliente", "3. Check-in", "4. Check-out", "5. Ver habitaciones", "6. salir" };
+            string[] mainMenu = { "1. Registrar Cliente", "2. Editar Cliente", "3. Check-in", "4. Check-out", "5. Ver habitaciones", "6. Salir" };
             do
             {
                 Console.WriteLine("Elige una opción:");
@@ -31,7 +31,11 @@ namespace Ejercicio_Hotel
                     mainMenu[3] + "\n" +
                     mainMenu[4] + "\n" +
                     mainMenu[5]);
-                answer = Convert.ToInt32(Console.ReadLine());
+
+                //answer = Convert.ToInt32(Console.ReadKey().KeyChar.ToString());
+                bool verifInt =
+                int.TryParse(Console.ReadKey().KeyChar.ToString(), out answer);
+
                 Console.Clear();
                 switch (answer)
                 {
@@ -44,7 +48,36 @@ namespace Ejercicio_Hotel
                         Console.WriteLine("Has elegido editar un cliente. \n " +
                             "Ingresa DNI de cliente.");
                         dni = Console.ReadLine();
-                        EditarCliente(dni);
+
+                        bool dniOk = false;
+                        int ok = 0;
+                        do
+                        {
+                            Console.WriteLine("Ingresa tu DNI (00000000X):");
+                            dni = Console.ReadLine();
+                            if (dni.Length == 9)
+                            {
+                                ok = EditarCliente(dni);
+                                dniOk = true;
+
+                            }
+                            else
+                            {
+                                Console.WriteLine("DNI inválido. Intenta de nuevo.");
+                            }
+
+
+                            if (dniOk && ok == 0)
+                            {
+                                dniOk = false;
+                                Console.WriteLine("Usuario no registrado.");
+                            }
+
+
+
+                        } while (dniOk == false);
+
+
                         break;
                     case 3:
                         Console.WriteLine("Has elegido hacer un check in.");
@@ -64,9 +97,19 @@ namespace Ejercicio_Hotel
                         Console.WriteLine("Hasta luego MariCarmen.");
                         break;
                     default:
-                        Console.WriteLine("Opción no válida.");
+
+                        if (verifInt)
+                        {
+
+                            Console.WriteLine("Opción no válida.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Introduce un número válido.");
+
+                        }
                         break;
-                } 
+                }
             } while (answer != 6);
 
             static void RegistroCliente()
@@ -74,17 +117,44 @@ namespace Ejercicio_Hotel
                 string name;
                 string lastName;
                 string dni;
+                bool dniOk = false;
                 Console.WriteLine("Ingresa tu nombre:");
                 name = Console.ReadLine();
                 Console.WriteLine("Ingresa tu apellido:");
                 lastName = Console.ReadLine();
-                Console.WriteLine("Ingresa tu DNI:");
-                dni = Console.ReadLine();
-
+                do
+                {
+                    Console.WriteLine("Ingresa tu DNI (00000000X):");
+                    dni = Console.ReadLine();
+                    if (dni.Length == 9)
+                    {
+                        dniOk = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("DNI inválido. Intenta de nuevo.");
+                    }
+                } while (dniOk == false);
                 conexion.Open();
-                string query1 = "insert into Clientes (Nombre,Apellido,DNI) values ('" + name + "','" + lastName + "','" + dni + "')";
-                SqlCommand comando = new SqlCommand(query1, conexion);
-                comando.ExecuteNonQuery();
+
+                string queryConfirm = $"select * from Clientes where dni = '{dni}'";
+                SqlCommand comando1 = new SqlCommand(queryConfirm, conexion);
+                SqlDataReader reader = comando1.ExecuteReader();
+                if (reader.Read())
+                {
+                    Console.WriteLine("Ya existe un usuario registrado con ese DNI");
+
+                }
+                else
+                {
+                    conexion.Close();
+
+                    conexion.Open();
+                    string query1 = "insert into Clientes (Nombre,Apellido,DNI) values ('" + name + "','" + lastName + "','" + dni + "')";
+                    SqlCommand comando = new SqlCommand(query1, conexion);
+                    comando.ExecuteNonQuery();
+
+                }
                 conexion.Close();
             }
             static int EditarCliente(string DNI)
@@ -118,47 +188,74 @@ namespace Ejercicio_Hotel
                 string dni;
                 Console.WriteLine("Ingresa tu DNI:");
                 dni = Console.ReadLine();
-                conexion.Open();
-                string query = "select * from Clientes where DNI = '" + dni + "'";
-                string query2 = "select CodHabitacion from Habitaciones where Estado = 0";
-                SqlCommand comando = new SqlCommand(query, conexion);
-                SqlDataReader registros = comando.ExecuteReader();
-                if (registros.Read())
+                if (dni.Length == 9)
                 {
-                    Console.WriteLine("Bienvenida(o)" + " " + registros["Nombre"] + " " + registros["Apellido"]);
-                    conexion.Close();
+
                     conexion.Open();
-                    comando = new SqlCommand(query2, conexion);
-                    registros = comando.ExecuteReader();
+                    string query = "select * from Clientes where DNI = '" + dni + "'";
+                    string query2 = "select CodHabitacion from Habitaciones where Estado = 0";
+                    SqlCommand comando = new SqlCommand(query, conexion);
+                    SqlDataReader registros = comando.ExecuteReader();
                     if (registros.Read())
                     {
-                        Console.WriteLine("Elige una habitación");
-                        do
+                        Console.WriteLine("Bienvenida(o)" + " " + registros["Nombre"] + " " + registros["Apellido"]);
+                        conexion.Close();
+                        conexion.Open();
+                        comando = new SqlCommand(query2, conexion);
+                        registros = comando.ExecuteReader();
+                        if (registros.Read())
                         {
-                            Console.WriteLine(registros["CodHabitacion"].ToString());
-                        } while (registros.Read());
-                        conexion.Close();
-                        conexion.Open();
-                        string hab = Console.ReadLine();
-                        string queryInsertReserva = $"Insert into Reservas (DNICliente, CodHabitacion, FechaCheckIn) values ('{dni}', {hab}, '{DateTime.Now}')";
-                        string queryUpdateHab = $"UPDATE Habitaciones set Estado = 1 where CodHabitacion = '{hab}'";
-                        comando = new SqlCommand(queryInsertReserva, conexion);
-                        comando.ExecuteNonQuery();
-                        conexion.Close();
-                        conexion.Open();
-                        comando = new SqlCommand(queryUpdateHab, conexion);
-                        comando.ExecuteNonQuery();
-                        conexion.Close();
+                            Console.WriteLine("Elige una habitación");
+                            do
+                            {
+                                Console.WriteLine(registros["CodHabitacion"].ToString());
+                            } while (registros.Read());
+                            conexion.Close();
+                            conexion.Open();
+                            string hab = Console.ReadLine();
+
+
+                            int habNum;
+                            bool confHab = int.TryParse(hab, out habNum);
+
+                            if (confHab && habNum > 0 && habNum < 9)
+                            {
+
+                                string queryInsertReserva = $"Insert into Reservas (DNICliente, CodHabitacion, FechaCheckIn) values ('{dni}', {habNum}, '{DateTime.Now}')";
+                                string queryUpdateHab = $"UPDATE Habitaciones set Estado = 1 where CodHabitacion = '{habNum}'";
+                                comando = new SqlCommand(queryInsertReserva, conexion);
+                                comando.ExecuteNonQuery();
+                                conexion.Close();
+                                conexion.Open();
+                                comando = new SqlCommand(queryUpdateHab, conexion);
+                                comando.ExecuteNonQuery();
+                                conexion.Close();
+                            }
+                            else
+                            {
+                                Console.WriteLine("No es un número de habitación correcta");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("pos te j0des jeje");
+
+                        }
+
                     }
                     else
                     {
-                        Console.WriteLine("pos te j0des jeje");
+                        Console.WriteLine("No estás registrado");
+
                     }
                 }
                 else
                 {
-                    Console.WriteLine("No estás registrado");
+                    Console.WriteLine("DNI inválido");
+
                 }
+
+
                 conexion.Close();
             }
             static void CheckOut(string DNI)
